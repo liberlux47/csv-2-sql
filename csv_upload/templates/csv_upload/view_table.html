@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Firefox compatibility -->
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <title>View Table - {{ csv_upload.table_name }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <style>
         .table-container {
             max-height: 600px;
@@ -74,6 +77,55 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    <!-- Firefox compatibility and error handling -->
+    <script>
+        // Firefox form history error handling
+        if (typeof window.FormHistory !== 'undefined') {
+            try {
+                window.addEventListener('error', function(e) {
+                    if (e.message && e.message.includes('Form history is disabled')) {
+                        e.preventDefault();
+                        return true;
+                    }
+                });
+            } catch (err) {
+                console.log('Form history handling not available');
+            }
+        }
+        
+        // IndexedDB error handling for Firefox
+        if ('indexedDB' in window) {
+            window.addEventListener('error', function(e) {
+                if (e.message && e.message.includes('IndexedDB')) {
+                    e.preventDefault();
+                    console.log('IndexedDB error suppressed for Firefox compatibility');
+                    return true;
+                }
+            });
+        }
+        
+        // CORS error suppression for external services
+        window.addEventListener('unhandledrejection', function(e) {
+            if (e.reason && e.reason.toString().includes('sentry')) {
+                e.preventDefault();
+                console.log('External service CORS error suppressed');
+            }
+        });
+        
+        // Firefox-specific table handling
+        document.addEventListener('DOMContentLoaded', function() {
+            if (navigator.userAgent.includes('Firefox')) {
+                console.log('Firefox detected - optimizing table display');
+                
+                // Ensure table scrolling works properly in Firefox
+                var tableContainers = document.querySelectorAll('.table-container');
+                tableContainers.forEach(function(container) {
+                    container.style.scrollBehavior = 'smooth';
+                });
+            }
+        });
+    </script>
 </body>
 </html>

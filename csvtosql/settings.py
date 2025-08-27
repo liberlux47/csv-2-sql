@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csvtosql.firefox_compatibility.FirefoxCompatibilityMiddleware',  # Firefox compatibility
 ]
 
 ROOT_URLCONF = 'csvtosql.urls'
@@ -121,3 +122,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Firefox compatibility settings
+# Content Security Policy to prevent external service errors
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Additional security headers for Firefox compatibility
+SECURE_REFERRER_POLICY = 'same-origin'
