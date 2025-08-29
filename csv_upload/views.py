@@ -7,8 +7,10 @@ import pandas as pd
 import json
 import io
 import re
-from .models import CSVUpload, CSVData
-from .forms import CSVUploadForm
+
+# Absolute imports to avoid IDE issues
+from csv_upload.models import CSVUpload, CSVData
+from csv_upload.forms import CSVUploadForm
 
 
 def upload_csv(request):
@@ -61,7 +63,6 @@ def process_csv_file(csv_file, table_name):
     df = pd.read_csv(io.StringIO(content))
     
     # Clean column names (remove special characters, spaces)
-    import re
     df.columns = [re.sub(r'[^a-zA-Z0-9_]', '_', col).lower().strip('_') for col in df.columns]
     
     # Create column information
