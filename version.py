@@ -1,10 +1,50 @@
 # Version file for csv-to-sql project
-__version__ = "0.3.0"
-__build__ = "2025.08.29.001"
+__version__ = "0.4.0"
+__build__ = "2025.08.29.002"
 __release_date__ = "2025-08-29"
 
 # Version history and changes
 VERSION_HISTORY = {
+    "0.4.0": {
+        "release_date": "2025-08-29",
+        "branch": "master",
+        "changes": [
+            "Fixed case sensitivity for table names - now preserves exact case as entered by user",
+            "Added table rename functionality in Edit view",
+            "Created comprehensive Edit Table view with table information display",
+            "Added Edit buttons throughout the application for better navigation",
+            "Enhanced form validation to prevent duplicate table names during rename",
+            "Improved user interface with dedicated edit/rename forms",
+            "Added table information display including record count and column details",
+            "Enhanced navigation with Edit table buttons in view and upload pages"
+        ],
+        "features_added": [
+            "Case-sensitive table name preservation",
+            "Table rename functionality with validation",
+            "Edit Table view with comprehensive table information",
+            "Rename form with duplicate name checking",
+            "Enhanced navigation with Edit buttons",
+            "Table statistics display (record count, column count)",
+            "Column information display with data types",
+            "Improved form validation for rename operations"
+        ],
+        "technical_improvements": [
+            "Removed .lower() transformation from table name validation",
+            "Added RenameTableForm with current table exclusion logic",
+            "Created edit_table view with POST handling for renames",
+            "Added edit_table URL pattern",
+            "Created edit_table.html template with modern UI",
+            "Updated navigation buttons across all templates",
+            "Enhanced form validation with duplicate checking",
+            "Improved user feedback for rename operations"
+        ],
+        "fixes": [
+            "Table names now preserve exact case (MyTable stays as MyTable, not mytable)",
+            "Form validation prevents duplicate table names during rename",
+            "Enhanced error handling for rename operations",
+            "Improved user feedback and success messages"
+        ]
+    },
     "0.3.0": {
         "release_date": "2025-08-29",
         "branch": "master", 

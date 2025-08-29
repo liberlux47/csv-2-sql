@@ -7,10 +7,9 @@ import pandas as pd
 import json
 import io
 import re
-
 # Absolute imports to avoid IDE issues
 from csv_upload.models import CSVUpload, CSVData
-from csv_upload.forms import CSVUploadForm
+from csv_upload.forms import CSVUploadForm, RenameTableForm
 
 
 def upload_csv(request):
@@ -357,3 +356,28 @@ def reload_table_data(request, table_id):
         'current_page': page_number,
         'page_size': page_size
     })
+
+
+def edit_table(request, table_id):
+    """Edit table view with rename functionality"""
+    csv_upload = get_object_or_404(CSVUpload, id=table_id)
+    rename_form = RenameTableForm(current_table_id=table_id)
+    
+    if request.method == 'POST':
+        if 'rename_table' in request.POST:
+            rename_form = RenameTableForm(request.POST, current_table_id=table_id)
+            if rename_form.is_valid():
+                new_name = rename_form.cleaned_data['new_table_name']
+                old_name = csv_upload.table_name
+                csv_upload.table_name = new_name
+                csv_upload.save()
+                
+                messages.success(request, f'Table renamed from "{old_name}" to "{new_name}" successfully!')
+                return redirect('csv_upload:edit_table', table_id=table_id)
+    
+    context = {
+        'csv_upload': csv_upload,
+        'rename_form': rename_form,
+    }
+    
+    return render(request, 'csv_upload/edit_table.html', context)

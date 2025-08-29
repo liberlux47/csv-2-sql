@@ -148,9 +148,14 @@
                     Total Records: <span id="total-records">{{ total_records }}</span>
                 </small>
             </div>
-            <a href="{% url 'csv_upload:upload' %}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back to Upload
-            </a>
+            <div>
+                <a href="{% url 'csv_upload:edit_table' csv_upload.id %}" class="btn btn-outline-warning me-2">
+                    <i class="fas fa-edit"></i> Edit Table
+                </a>
+                <a href="{% url 'csv_upload:upload' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Upload
+                </a>
+            </div>
         </div>
 
         <!-- Pending Changes Alert -->

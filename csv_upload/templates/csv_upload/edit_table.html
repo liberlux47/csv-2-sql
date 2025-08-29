@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Firefox compatibility -->
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <title>Edit Table - {{ csv_upload.table_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Edit Table: {{ csv_upload.table_name }}</h1>
+            <a href="{% url 'csv_upload:upload' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+        
+        <!-- Display messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Table Information -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-info-circle"></i> Table Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="150">Table Name:</th>
+                                <td><code>{{ csv_upload.table_name }}</code></td>
+                            </tr>
+                            <tr>
+                                <th>Original File:</th>
+                                <td>{{ csv_upload.filename }}</td>
+                            </tr>
+                            <tr>
+                                <th>Upload Date:</th>
+                                <td>{{ csv_upload.uploaded_at|date:"M d, Y H:i" }}</td>
+                            </tr>
+                            <tr>
+                                <th>Total Records:</th>
+                                <td>{{ csv_upload.csvdata_set.count }}</td>
+                            </tr>
+                            <tr>
+                                <th>Columns:</th>
+                                <td>{{ csv_upload.get_columns|length }}</td>
+                            </tr>
+                        </table>
+                        
+                        <div class="mt-3">
+                            <a href="{% url 'csv_upload:view_table' csv_upload.id %}" class="btn btn-primary">
+                                <i class="fas fa-table"></i> View & Edit Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <!-- Rename Table -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3><i class="fas fa-edit"></i> Rename Table</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="{{ rename_form.new_table_name.id_for_label }}" class="form-label">{{ rename_form.new_table_name.label }}</label>
+                                {{ rename_form.new_table_name }}
+                                {% if rename_form.new_table_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in rename_form.new_table_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">{{ rename_form.new_table_name.help_text }}</div>
+                            </div>
+                            <button type="submit" name="rename_table" class="btn btn-warning w-100">
+                                <i class="fas fa-save"></i> Rename Table
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Delete Table -->
+                <div class="card mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h3><i class="fas fa-trash"></i> Danger Zone</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">
+                            Delete this table and all its data permanently. This action cannot be undone.
+                        </p>
+                        <a href="{% url 'csv_upload:delete_table' csv_upload.id %}" class="btn btn-danger w-100">
+                            <i class="fas fa-trash"></i> Delete Table
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column Information -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-columns"></i> Column Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Data Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for column, data_type in csv_upload.get_columns.items %}
+                            <tr>
+                                <td><code>{{ column }}</code></td>
+                                <td><span class="badge bg-secondary">{{ data_type }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

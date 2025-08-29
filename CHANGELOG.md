@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-08-29
+
+### Added
+- **Case-Sensitive Table Names**: Table names now preserve exact case as entered by the user (e.g., "MyTable" stays "MyTable", not "mytable")
+- **Table Rename Functionality**: Complete rename feature accessible through the new Edit Table view
+- **Edit Table View**: Comprehensive table management interface with:
+  - Table information display (name, file, upload date, record count, columns)
+  - Rename form with validation
+  - Column information table with data types
+  - Quick access to view/edit table data
+  - Delete table functionality
+- **Enhanced Navigation**: Added Edit buttons throughout the application:
+  - Edit buttons in existing tables list on upload page
+  - Edit button in table view toolbar
+  - Easy navigation between view, edit, and upload pages
+
+### Changed
+- **Form Validation**: Enhanced table name validation to preserve case while still sanitizing special characters
+- **User Interface**: Improved layout and navigation with consistent Edit/View/Delete button patterns
+- **Form Handling**: Better duplicate name checking during rename operations (excludes current table)
+
+### Fixed
+- **Case Preservation**: Removed automatic lowercasing of table names in form validation
+- **Duplicate Name Prevention**: Enhanced validation prevents creating duplicate table names during rename
+- **User Feedback**: Improved success and error messages for all table operations
+
+### Technical Improvements
+- Added `RenameTableForm` with current table exclusion logic
+- Created `edit_table` view with proper POST handling
+- Added `edit_table` URL pattern
+- Created comprehensive `edit_table.html` template
+- Enhanced form validation across all table operations
+- Improved error handling and user feedback
+
 ## [0.3.0] - 2025-08-29
 
 ### Added
