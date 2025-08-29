@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-08-29
+
+### Added
+- **In-Place Table Editing**: Click-to-edit functionality for all table cells
+- **Advanced Table Controls**: Modern toolbar with Save/Undo/Reload buttons  
+- **Real-Time Filtering**: Live search across all table columns with instant results
+- **Column Sorting**: Click column headers to sort ascending/descending with visual indicators
+- **Advanced Pagination**: MudPager-inspired pagination component with:
+  - Customizable page sizes (5, 10, 25, 50, 100 rows)
+  - Direct page number input
+  - First/Previous/Next/Last navigation buttons
+  - Dynamic page count calculation
+- **Visual Change Tracking**: Modified cells highlighted with change indicators
+- **AJAX Updates**: Asynchronous cell updates without page refresh
+- **User Feedback System**: Toast notifications and loading overlays
+- **Enhanced UX**: Modern responsive design optimized for desktop and mobile
+
+### Changed
+- **Table View**: Complete redesign with professional interface
+- **Navigation**: Enhanced pagination with intuitive controls
+- **Performance**: Server-side pagination for large datasets
+- **Responsiveness**: Improved mobile and tablet experience
+
+### Technical Improvements
+- **New API Endpoints**: 
+  - `POST /api/table/<id>/update-cell/` - Update individual cells
+  - `GET /api/table/<id>/reload/` - Reload table data with filters
+- **Enhanced Views**: Advanced filtering, sorting, and pagination logic
+- **JavaScript Framework**: Comprehensive client-side table management
+- **Error Handling**: Robust error handling with user-friendly messages
+- **Performance Optimization**: Efficient JSON field operations
+
+### User Interface
+- **Modern Design**: Professional toolbar and control layout
+- **Visual Feedback**: Clear indicators for modified, loading, and error states
+- **Accessibility**: Keyboard navigation and screen reader support
+- **Mobile Responsive**: Optimized for all device sizes
+
+### Developer Features
+- **Modular JavaScript**: Well-organized client-side code
+- **API Documentation**: Clear endpoint specifications
+- **Version Tracking**: Comprehensive change documentation
+
+---
+
 ## [0.2.0] - 2025-08-26
 
 ### Added
@@ -82,9 +127,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Git Tags and Releases
 
 ### Tag Format
-- **Release Tags**: `v0.2.0`, `v0.1.0`
-- **Pre-release Tags**: `v0.2.0-rc.1`, `v0.2.0-beta.1`
-- **Development Tags**: `v0.2.0-dev.20250826`
+- **Release Tags**: `v0.3.0`, `v0.2.0`, `v0.1.0`
+- **Pre-release Tags**: `v0.3.0-rc.1`, `v0.3.0-beta.1`
+- **Development Tags**: `v0.3.0-dev.20250829`
 
 ### Release Process
 1. **Feature Development**: Work in feature branches
@@ -99,6 +144,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **develop**: Integration branch for features
 - **feature/***: Individual feature development
 - **hotfix/***: Critical bug fixes for production
+
+---
+
+## Feature Comparison
+
+| Feature | v0.1.0 | v0.2.0 | v0.3.0 |
+|---------|--------|--------|--------|
+| CSV Upload | ✅ | ✅ | ✅ |
+| Table Viewing | ✅ | ✅ | ✅ |
+| Firefox Support | ❌ | ✅ | ✅ |
+| Cell Editing | ❌ | ❌ | ✅ |
+| Table Filtering | ❌ | ❌ | ✅ |
+| Column Sorting | ❌ | ❌ | ✅ |
+| Advanced Pagination | ❌ | ❌ | ✅ |
+| AJAX Updates | ❌ | ❌ | ✅ |
+| Save/Undo | ❌ | ❌ | ✅ |
+| Mobile Responsive | ⚠️ | ⚠️ | ✅ |
 
 ---
 
@@ -117,8 +179,9 @@ When contributing to this project:
 
 | Version | Status | Branch | Support Until |
 |---------|--------|--------|---------------|
-| 0.2.x   | Active | main   | Current       |
-| 0.1.x   | Legacy | v0.1.x | 2025-12-31    |
+| 0.3.x   | Active | main   | Current       |
+| 0.2.x   | Legacy | v0.2.x | 2025-12-31    |
+| 0.1.x   | EOL    | v0.1.x | 2025-08-31    |
 
 ---
 
