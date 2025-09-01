@@ -1,10 +1,60 @@
 # Version file for csv-to-sql project
-__version__ = "0.4.0"
-__build__ = "2025.08.29.002"
-__release_date__ = "2025-08-29"
+__version__ = "0.5.0"
+__build__ = "2025.09.01.001"
+__release_date__ = "2025-09-01"
 
 # Version history and changes
 VERSION_HISTORY = {
+    "0.5.0": {
+        "release_date": "2025-09-01",
+        "branch": "master",
+        "changes": [
+            "Added comprehensive column properties configuration system",
+            "Implemented database schema properties (nullable, primary key, foreign key, etc.)",
+            "Created advanced column configuration interface with validation",
+            "Added support for foreign key relationships with cascade options",
+            "Enhanced column information display with property badges",
+            "Implemented auto-increment support for INTEGER primary keys",
+            "Added unique constraints and default value settings",
+            "Created comprehensive column configuration form with field dependencies",
+            "Enhanced model structure to support rich column metadata",
+            "Added breadcrumb navigation for better user experience"
+        ],
+        "features_added": [
+            "Column Properties Configuration: Complete database schema setup",
+            "Primary Key Configuration: Set primary keys with auto-increment",
+            "Foreign Key Relationships: Configure foreign keys with cascade options",
+            "Constraint Management: Nullable, unique, and default value settings",
+            "Data Type Selection: Choose from TEXT, INTEGER, REAL, BOOLEAN, DATE, DATETIME, BLOB",
+            "Advanced Form Validation: Smart field dependencies and constraint validation",
+            "Property Badges: Visual indicators for column properties (PK, FK, UNIQUE, NOT NULL)",
+            "Column Configuration UI: Dedicated interface for each column",
+            "Cascade Options: SET NULL, CASCADE, RESTRICT, SET DEFAULT, NO ACTION",
+            "Max Length Settings: Configurable length for TEXT fields"
+        ],
+        "technical_improvements": [
+            "Extended CSVUpload model with column property methods",
+            "Created ColumnPropertiesForm with comprehensive validation",
+            "Added configure_column view with property management",
+            "Built configure_column.html template with interactive UI",
+            "Enhanced edit_table.html to show column properties",
+            "Updated CSV processing to use new column format",
+            "Added JavaScript for dynamic form field management",
+            "Implemented breadcrumb navigation system",
+            "Added property badge display system",
+            "Enhanced URL patterns for column configuration"
+        ],
+        "user_experience": [
+            "Interactive column configuration with real-time field updates",
+            "Visual property indicators in column lists",
+            "Smart form validation with helpful error messages",
+            "Breadcrumb navigation for easy navigation",
+            "Contextual help and tips in configuration forms",
+            "Property preview in configuration sidebar",
+            "Responsive design for mobile and desktop",
+            "Intuitive checkbox and select controls"
+        ]
+    },
     "0.4.0": {
         "release_date": "2025-08-29",
         "branch": "master",

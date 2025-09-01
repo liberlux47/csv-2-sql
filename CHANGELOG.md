@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2025-09-01
+
+### Added
+- **Column Properties Configuration System**: Complete database schema management interface
+- **Database Schema Properties**: Configure nullable, primary key, foreign key, unique constraints, default values
+- **Foreign Key Relationships**: Set up foreign key relationships with cascade options:
+  - CASCADE - Delete related records
+  - SET NULL - Set foreign key to null
+  - RESTRICT - Prevent deletion
+  - SET DEFAULT - Set to default value
+  - NO ACTION - No action
+- **Primary Key Management**: Configure primary keys with optional auto-increment for INTEGER fields
+- **Data Type Selection**: Choose from TEXT, INTEGER, REAL, BOOLEAN, DATE, DATETIME, BLOB
+- **Constraint Management**: 
+  - Nullable/NOT NULL constraints
+  - Unique constraints
+  - Default value settings
+  - Max length for TEXT fields
+- **Column Configuration Interface**: Dedicated page for configuring each column's properties
+- **Property Visualization**: Visual badges showing column properties (PK, FK, UNIQUE, NOT NULL, AUTO_INC, DEFAULT)
+- **Smart Form Validation**: Intelligent field dependencies and constraint validation
+- **Breadcrumb Navigation**: Enhanced navigation with breadcrumbs
+
+### Changed
+- **Column Data Structure**: Extended column metadata to include comprehensive database properties
+- **Edit Table View**: Enhanced with detailed property display and Configure buttons
+- **CSV Processing**: Updated to initialize columns with default property values
+- **Model Methods**: Added new methods for column property management
+
+### Technical Improvements
+- **Enhanced Model**: Added `get_column_properties`, `set_column_properties`, `get_column_names` methods
+- **New Form Class**: `ColumnPropertiesForm` with comprehensive validation and field dependencies
+- **Interactive UI**: JavaScript-powered form with dynamic field showing/hiding
+- **Property Management**: Complete CRUD operations for column properties
+- **URL Structure**: New endpoint `/edit/<table_id>/column/<column_name>/`
+- **Template System**: New `configure_column.html` template with modern responsive design
+
+### User Experience
+- **Interactive Forms**: Real-time field updates based on selections
+- **Visual Feedback**: Property badges and status indicators
+- **Contextual Help**: Tips and guidance in configuration interface
+- **Mobile Responsive**: Optimized for all device sizes
+- **Smart Validation**: Helpful error messages and constraint enforcement
+
 ## [0.4.0] - 2025-08-29
 
 ### Added

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Firefox compatibility -->
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <title>Configure Column - {{ column_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Configure Column: <code>{{ column_name }}</code></h1>
+            <div>
+                <a href="{% url 'csv_upload:edit_table' csv_upload.id %}" class="btn btn-secondary me-2">
+                    <i class="fas fa-arrow-left"></i> Back to Table
+                </a>
+                <a href="{% url 'csv_upload:upload' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+        </div>
+        
+        <!-- Display messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'csv_upload:upload' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'csv_upload:edit_table' csv_upload.id %}">{{ csv_upload.table_name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ column_name }}</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Column Configuration Form -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-cog"></i> Column Properties</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <!-- Basic Properties -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h5 class="border-bottom pb-2">Basic Properties</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ form.data_type.id_for_label }}" class="form-label">{{ form.data_type.label }}</label>
+                                        {{ form.data_type }}
+                                        {% if form.data_type.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.data_type.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-3" id="max-length-field">
+                                        <label for="{{ form.max_length.id_for_label }}" class="form-label">{{ form.max_length.label }}</label>
+                                        {{ form.max_length }}
+                                        <div class="form-text">{{ form.max_length.help_text }}</div>
+                                        {% if form.max_length.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.max_length.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ form.default_value.id_for_label }}" class="form-label">{{ form.default_value.label }}</label>
+                                        {{ form.default_value }}
+                                        <div class="form-text">{{ form.default_value.help_text }}</div>
+                                        {% if form.default_value.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.default_value.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="border-bottom pb-2">Constraints</h5>
+                                    
+                                    <div class="form-check mb-3">
+                                        {{ form.nullable }}
+                                        <label class="form-check-label" for="{{ form.nullable.id_for_label }}">
+                                            {{ form.nullable.label }}
+                                        </label>
+                                        {% if form.nullable.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.nullable.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        {{ form.primary_key }}
+                                        <label class="form-check-label" for="{{ form.primary_key.id_for_label }}">
+                                            <strong>{{ form.primary_key.label }}</strong>
+                                        </label>
+                                        {% if form.primary_key.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.primary_key.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        {{ form.unique }}
+                                        <label class="form-check-label" for="{{ form.unique.id_for_label }}">
+                                            {{ form.unique.label }}
+                                        </label>
+                                        {% if form.unique.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.unique.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="form-check mb-3" id="auto-increment-field">
+                                        {{ form.auto_increment }}
+                                        <label class="form-check-label" for="{{ form.auto_increment.id_for_label }}">
+                                            {{ form.auto_increment.label }}
+                                        </label>
+                                        <div class="form-text">{{ form.auto_increment.help_text }}</div>
+                                        {% if form.auto_increment.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {% for error in form.auto_increment.errors %}{{ error }}{% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Foreign Key Section -->
+                            <div class="border-top pt-4">
+                                <h5 class="border-bottom pb-2">Foreign Key Relationship</h5>
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_foreign_key }}
+                                            <label class="form-check-label" for="{{ form.is_foreign_key.id_for_label }}">
+                                                <strong>{{ form.is_foreign_key.label }}</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="foreign-key-fields" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="{{ form.foreign_table.id_for_label }}" class="form-label">{{ form.foreign_table.label }}</label>
+                                                {{ form.foreign_table }}
+                                                <div class="form-text">{{ form.foreign_table.help_text }}</div>
+                                                {% if form.foreign_table.errors %}
+                                                    <div class="invalid-feedback d-block">
+                                                        {% for error in form.foreign_table.errors %}{{ error }}{% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="{{ form.foreign_column.id_for_label }}" class="form-label">{{ form.foreign_column.label }}</label>
+                                                {{ form.foreign_column }}
+                                                <div class="form-text">{{ form.foreign_column.help_text }}</div>
+                                                {% if form.foreign_column.errors %}
+                                                    <div class="invalid-feedback d-block">
+                                                        {% for error in form.foreign_column.errors %}{{ error }}{% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="{{ form.on_delete.id_for_label }}" class="form-label">{{ form.on_delete.label }}</label>
+                                                {{ form.on_delete }}
+                                                <div class="form-text">{{ form.on_delete.help_text }}</div>
+                                                {% if form.on_delete.errors %}
+                                                    <div class="invalid-feedback d-block">
+                                                        {% for error in form.on_delete.errors %}{{ error }}{% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Form Actions -->
+                            <div class="border-top pt-4">
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save Column Properties
+                                    </button>
+                                    <a href="{% url 'csv_upload:edit_table' csv_upload.id %}" class="btn btn-outline-secondary">
+                                        Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Column Info Sidebar -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-info-circle"></i> Current Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tr>
+                                <th>Column:</th>
+                                <td><code>{{ column_name }}</code></td>
+                            </tr>
+                            <tr>
+                                <th>Table:</th>
+                                <td>{{ csv_upload.table_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Data Type:</th>
+                                <td><span class="badge bg-secondary">{{ existing_properties.data_type }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>Nullable:</th>
+                                <td>
+                                    {% if existing_properties.nullable %}
+                                        <span class="badge bg-success">Yes</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">No</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Primary Key:</th>
+                                <td>
+                                    {% if existing_properties.primary_key %}
+                                        <span class="badge bg-warning">Yes</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% if existing_properties.foreign_key %}
+                            <tr>
+                                <th>Foreign Key:</th>
+                                <td>{{ existing_properties.foreign_table }}.{{ existing_properties.foreign_column }}</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6><i class="fas fa-lightbulb"></i> Tips</h6>
+                    </div>
+                    <div class="card-body">
+                        <small class="text-muted">
+                            <ul class="list-unstyled mb-0">
+                                <li>• Primary keys are automatically non-nullable</li>
+                                <li>• Auto increment only works with INTEGER primary keys</li>
+                                <li>• Foreign keys reference another table's column</li>
+                                <li>• Max length only applies to TEXT fields</li>
+                                <li>• Use CASCADE for typical delete behavior</li>
+                            </ul>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataTypeSelect = document.getElementById('id_data_type');
+            const maxLengthField = document.getElementById('max-length-field');
+            const primaryKeyCheck = document.getElementById('id_primary_key');
+            const autoIncrementField = document.getElementById('auto-increment-field');
+            const nullableCheck = document.getElementById('id_nullable');
+            const isForeignKeyCheck = document.getElementById('id_is_foreign_key');
+            const foreignKeyFields = document.getElementById('foreign-key-fields');
+            
+            // Show/hide max length field based on data type
+            function toggleMaxLengthField() {
+                if (dataTypeSelect.value === 'TEXT') {
+                    maxLengthField.style.display = 'block';
+                } else {
+                    maxLengthField.style.display = 'none';
+                }
+            }
+            
+            // Show/hide auto increment based on data type and primary key
+            function toggleAutoIncrementField() {
+                if (dataTypeSelect.value === 'INTEGER' && primaryKeyCheck.checked) {
+                    autoIncrementField.style.display = 'block';
+                } else {
+                    autoIncrementField.style.display = 'none';
+                    document.getElementById('id_auto_increment').checked = false;
+                }
+            }
+            
+            // Handle primary key changes
+            function handlePrimaryKeyChange() {
+                if (primaryKeyCheck.checked) {
+                    nullableCheck.checked = false;
+                    nullableCheck.disabled = true;
+                } else {
+                    nullableCheck.disabled = false;
+                }
+                toggleAutoIncrementField();
+            }
+            
+            // Show/hide foreign key fields
+            function toggleForeignKeyFields() {
+                if (isForeignKeyCheck.checked) {
+                    foreignKeyFields.style.display = 'block';
+                } else {
+                    foreignKeyFields.style.display = 'none';
+                }
+            }
+            
+            // Event listeners
+            dataTypeSelect.addEventListener('change', function() {
+                toggleMaxLengthField();
+                toggleAutoIncrementField();
+            });
+            
+            primaryKeyCheck.addEventListener('change', handlePrimaryKeyChange);
+            isForeignKeyCheck.addEventListener('change', toggleForeignKeyFields);
+            
+            // Initialize on page load
+            toggleMaxLengthField();
+            toggleAutoIncrementField();
+            handlePrimaryKeyChange();
+            toggleForeignKeyFields();
+        });
+    </script>
+</body>
+</html>

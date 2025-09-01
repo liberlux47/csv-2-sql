@@ -9,7 +9,7 @@ import io
 import re
 # Absolute imports to avoid IDE issues
 from csv_upload.models import CSVUpload, CSVData
-from csv_upload.forms import CSVUploadForm, RenameTableForm
+from csv_upload.forms import CSVUploadForm, RenameTableForm, ColumnPropertiesForm
 
 
 def upload_csv(request):
@@ -64,18 +64,33 @@ def process_csv_file(csv_file, table_name):
     # Clean column names (remove special characters, spaces)
     df.columns = [re.sub(r'[^a-zA-Z0-9_]', '_', col).lower().strip('_') for col in df.columns]
     
-    # Create column information
+    # Create column information with properties
     columns_info = {}
     for col in df.columns:
         # Determine data type
         if df[col].dtype == 'object':
-            columns_info[col] = 'TEXT'
+            data_type = 'TEXT'
         elif df[col].dtype in ['int64', 'int32']:
-            columns_info[col] = 'INTEGER'
+            data_type = 'INTEGER'
         elif df[col].dtype in ['float64', 'float32']:
-            columns_info[col] = 'REAL'
+            data_type = 'REAL'
         else:
-            columns_info[col] = 'TEXT'
+            data_type = 'TEXT'
+        
+        # Create column properties with default values
+        columns_info[col] = {
+            'data_type': data_type,
+            'nullable': True,
+            'primary_key': False,
+            'foreign_key': False,
+            'foreign_table': None,
+            'foreign_column': None,
+            'on_delete': None,
+            'unique': False,
+            'default_value': None,
+            'max_length': None,
+            'auto_increment': False
+        }
     
     # Create CSVUpload record
     csv_upload = CSVUpload.objects.create(
@@ -381,3 +396,41 @@ def edit_table(request, table_id):
     }
     
     return render(request, 'csv_upload/edit_table.html', context)
+
+
+def configure_column(request, table_id, column_name):
+    """Configure column properties view"""
+    csv_upload = get_object_or_404(CSVUpload, id=table_id)
+    
+    # Get existing properties for this column
+    existing_properties = csv_upload.get_column_properties(column_name)
+    
+    if request.method == 'POST':
+        form = ColumnPropertiesForm(
+            request.POST,
+            column_name=column_name,
+            existing_properties=existing_properties
+        )
+        
+        if form.is_valid():
+            # Save the column properties
+            properties = form.get_column_properties()
+            csv_upload.set_column_properties(column_name, properties)
+            csv_upload.save()
+            
+            messages.success(request, f'Column "{column_name}" properties updated successfully!')
+            return redirect('csv_upload:edit_table', table_id=table_id)
+    else:
+        form = ColumnPropertiesForm(
+            column_name=column_name,
+            existing_properties=existing_properties
+        )
+    
+    context = {
+        'csv_upload': csv_upload,
+        'column_name': column_name,
+        'form': form,
+        'existing_properties': existing_properties,
+    }
+    
+    return render(request, 'csv_upload/configure_column.html', context)
