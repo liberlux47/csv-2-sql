@@ -131,46 +131,44 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for column_name in csv_upload.get_column_names %}
-                            {% with properties=csv_upload.get_column_properties:column_name %}
+                            {% for column in columns_with_properties %}
                             <tr>
-                                <td><code>{{ column_name }}</code></td>
-                                <td><span class="badge bg-secondary">{{ properties.data_type }}</span></td>
+                                <td><code>{{ column.name }}</code></td>
+                                <td><span class="badge bg-secondary">{{ column.properties.data_type }}</span></td>
                                 <td>
                                     <div class="d-flex flex-wrap gap-1">
-                                        {% if properties.primary_key %}
+                                        {% if column.properties.primary_key %}
                                             <span class="badge bg-warning">PK</span>
                                         {% endif %}
-                                        {% if properties.foreign_key %}
+                                        {% if column.properties.foreign_key %}
                                             <span class="badge bg-info">FK</span>
                                         {% endif %}
-                                        {% if properties.unique %}
+                                        {% if column.properties.unique %}
                                             <span class="badge bg-success">UNIQUE</span>
                                         {% endif %}
-                                        {% if not properties.nullable %}
+                                        {% if not column.properties.nullable %}
                                             <span class="badge bg-danger">NOT NULL</span>
                                         {% endif %}
-                                        {% if properties.auto_increment %}
+                                        {% if column.properties.auto_increment %}
                                             <span class="badge bg-dark">AUTO_INC</span>
                                         {% endif %}
-                                        {% if properties.default_value %}
-                                            <span class="badge bg-secondary" title="Default: {{ properties.default_value }}">DEFAULT</span>
+                                        {% if column.properties.default_value %}
+                                            <span class="badge bg-secondary" title="Default: {{ column.properties.default_value }}">DEFAULT</span>
                                         {% endif %}
                                     </div>
-                                    {% if properties.foreign_key %}
+                                    {% if column.properties.foreign_key %}
                                         <small class="text-muted d-block mt-1">
-                                            References: {{ properties.foreign_table }}.{{ properties.foreign_column }}
+                                            References: {{ column.properties.foreign_table }}.{{ column.properties.foreign_column }}
                                         </small>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{% url 'csv_upload:configure_column' csv_upload.id column_name %}" 
+                                    <a href="{% url 'csv_upload:configure_column' csv_upload.id column.name %}" 
                                        class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-cog"></i> Configure
                                     </a>
                                 </td>
                             </tr>
-                            {% endwith %}
                             {% endfor %}
                         </tbody>
                     </table>

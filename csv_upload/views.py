@@ -390,9 +390,19 @@ def edit_table(request, table_id):
                 messages.success(request, f'Table renamed from "{old_name}" to "{new_name}" successfully!')
                 return redirect('csv_upload:edit_table', table_id=table_id)
     
+    # Prepare column data with properties for template
+    columns_with_properties = []
+    for column_name in csv_upload.get_column_names():
+        properties = csv_upload.get_column_properties(column_name)
+        columns_with_properties.append({
+            'name': column_name,
+            'properties': properties
+        })
+    
     context = {
         'csv_upload': csv_upload,
         'rename_form': rename_form,
+        'columns_with_properties': columns_with_properties,
     }
     
     return render(request, 'csv_upload/edit_table.html', context)
