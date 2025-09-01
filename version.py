@@ -1,10 +1,52 @@
 # Version file for csv-to-sql project
-__version__ = "0.5.0"
-__build__ = "2025.09.01.001"
+__version__ = "0.6.0"
+__build__ = "2025.09.01.002"
 __release_date__ = "2025-09-01"
 
 # Version history and changes
 VERSION_HISTORY = {
+    "0.6.0": {
+        "release_date": "2025-09-01",
+        "branch": "master",
+        "changes": [
+            "Migrated database backend from SQLite to PostgreSQL",
+            "Added PostgreSQL adapter (psycopg2-binary) as dependency",
+            "Updated Django database settings for PostgreSQL connection",
+            "Created PostgreSQL database and user with proper permissions",
+            "Successfully migrated all Django models to PostgreSQL",
+            "Maintained all existing functionality with improved scalability",
+            "Enhanced performance and concurrent access capabilities",
+            "Added production-ready database configuration"
+        ],
+        "features_added": [
+            "PostgreSQL database backend support",
+            "Production-ready database configuration",
+            "Enhanced concurrent access capabilities",
+            "Improved data integrity and ACID compliance",
+            "Better performance for large datasets",
+            "Advanced indexing and query optimization",
+            "Backup and recovery capabilities",
+            "Multi-user concurrent editing support"
+        ],
+        "technical_improvements": [
+            "Replaced SQLite with PostgreSQL 16",
+            "Added psycopg2-binary dependency to pyproject.toml",
+            "Updated DATABASES configuration in settings.py",
+            "Created dedicated PostgreSQL database 'csv2sql'",
+            "Created dedicated database user 'csv2sql_user'",
+            "Applied all Django migrations to PostgreSQL",
+            "Verified database connection and table creation",
+            "Maintained backward compatibility with existing models"
+        ],
+        "infrastructure": [
+            "PostgreSQL 16.9 server installation and configuration",
+            "Database user with restricted permissions for security",
+            "UTF-8 encoding and UTC timezone configuration",
+            "Proper schema permissions and access controls",
+            "Development and production database separation capability",
+            "Enhanced backup and disaster recovery options"
+        ]
+    },
     "0.5.0": {
         "release_date": "2025-09-01",
         "branch": "master",

@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2025-09-01
+
+### Changed
+- **Database Backend Migration**: Migrated from SQLite to PostgreSQL for production readiness
+- **Enhanced Performance**: Improved concurrent access and large dataset handling
+- **Production Ready**: Enhanced scalability and reliability with PostgreSQL
+
+### Added
+- **PostgreSQL Support**: Complete migration to PostgreSQL 16.9 database backend
+- **Database Configuration**: Production-ready PostgreSQL connection settings
+- **Enhanced Concurrent Access**: Multiple users can now safely edit tables simultaneously
+- **Improved Data Integrity**: ACID compliance and better transaction handling
+- **Advanced Indexing**: Better query performance for large CSV files
+- **Backup Capabilities**: Enhanced backup and recovery options with PostgreSQL
+
+### Technical Improvements
+- **Database Backend**: Replaced `django.db.backends.sqlite3` with `django.db.backends.postgresql`
+- **New Dependency**: Added `psycopg2-binary>=2.9.0` as PostgreSQL adapter
+- **Database Setup**: Created dedicated `csv2sql` database with `csv2sql_user`
+- **Permissions**: Configured proper database permissions and security
+- **Migration**: Successfully migrated all Django models to PostgreSQL
+- **Settings**: Updated database configuration in `settings.py`
+- **Project Config**: Updated `pyproject.toml` with PostgreSQL dependency
+
+### Infrastructure
+- **PostgreSQL Server**: Installed and configured PostgreSQL 16.9
+- **Database User**: Created dedicated user with restricted permissions
+- **Encoding**: UTF-8 encoding and UTC timezone configuration
+- **Schema Permissions**: Proper public schema access controls
+- **Service**: Enabled PostgreSQL service with automatic startup
+
+### Backward Compatibility
+- **Model Structure**: All existing models remain unchanged
+- **API Endpoints**: All existing functionality preserved
+- **User Interface**: No changes to UI/UX
+- **Data Migration**: Seamless transition from SQLite (manual migration available)
+
 ## [0.5.0] - 2025-09-01
 
 ### Added
